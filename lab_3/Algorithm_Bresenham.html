@@ -1,0 +1,84 @@
+<HTML>
+<BODY>
+<canvas id="lab03" width="500" height="400" style="border:1px solid">
+</canvas>
+<script>
+
+    function line_to(algorithm, x0, y0, x1, y1) {
+        var Corner = Math.abs(y1 - y0) > Math.abs(x1 - x0); //проверяем угол
+        var Corner1 = x0 > x1;
+        // линия слево направо
+        if (Corner) {
+            var c = x0;
+            x0 = y0;
+            y0 = c;
+            c = x1;
+            x1 = y1;
+            y1 = c;
+        }
+        // линия справо налево
+        if (Corner1) {
+            var с = x0;
+            x0 = x1;
+            x1 = с;
+            с = y0;
+            y0 = y1;
+            y1 = с;
+        }
+        var difference_x = x1 - x0;// разница в значениях x
+        var difference_y = Math.abs(y1 - y0); // разница в значениях y
+        var error = difference_x / 2;
+        var direction_y = (y0 < y1) ? 1 : -1; // направление y
+        var y = y0;
+
+        for (x = x0; x <= x1; x++) {
+            //поменять местами
+            if (Corner) {
+                algorithm.data[(y+x*algorithm.width)*4] = 255;
+                algorithm.data[(y+x*algorithm.width)*4 + 1] = 0;
+                algorithm.data[(y+x*algorithm.width)*4 + 2] = 0;
+                algorithm.data[(y+x*algorithm.width)*4 + 3] = 255;
+            } else {
+                algorithm.data[(x+y*algorithm.width)*4] = 255;
+                algorithm.data[(x+y*algorithm.width)*4 + 1] = 0;
+                algorithm.data[(x+y*algorithm.width)*4 + 2] = 0;
+                algorithm.data[(x+y*algorithm.width)*4 + 3] = 255;
+            }
+
+            error = error - difference_y;
+            if (error < 0) {
+                y = y + direction_y;
+                error = error + difference_x;
+            }
+        }
+
+    }
+</script>
+<script>
+    var canvas = document.getElementById("lab03");
+    var ctx = canvas.getContext("2d");
+
+    var z = 0;
+    var x0 = 0;
+    var y0 = 0;
+    var x1 = 0;
+    var y1 = 0;
+    var line = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    console.log(line);
+    canvas.addEventListener("click", function(event){
+        if (!z) {
+            x0 = event.offsetX;
+            y0 = event.offsetY;
+            z = 1;
+        } else {
+            x1 = event.offsetX;
+            y1 = event.offsetY;
+            line_to(line, x0, y0, x1, y1);
+            ctx.putImageData(line, 0, 0);
+            z = 0;
+        }
+    });
+
+</script>
+</BODY>
+</HTML>

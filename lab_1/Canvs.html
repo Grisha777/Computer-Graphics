@@ -1,0 +1,99 @@
+<HTML>
+<BODY>
+<canvas id='lab01' width='1000' height='500' style="border:1px solid">
+</canvas>
+<script>
+    var canvas = document.getElementById('lab01');
+    var ctx = canvas.getContext('2d');
+    var i = 0;
+    var up = 0;
+    var down = true;
+    var direction = 1;
+
+
+    document.addEventListener("keydown", function(event) {
+        if (event.code == "ArrowRight") {
+            direction = 1;
+        } else if (event.code == "ArrowLeft") {
+            direction = -1;
+        } else if(event.code == "ArrowUp"){
+            down = true;
+            up = 0;
+        } else if (event.code == "ArrowDown"){
+            down = false;
+            up = 100;
+        }
+    });
+
+    setInterval (function () {
+
+        //корпус
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // очистка внутренней области прозрачным
+        ctx.beginPath();// создание нового контура
+        ctx.fillStyle = 'red';
+        ctx.fillRect(70+i, 340+up, 235, 40);
+        ctx.stroke();// рисуем фигуру с внешняя обводка
+        ctx.closePath();
+
+        //фара
+        ctx.beginPath();// создание нового контура
+        ctx.moveTo(301+i, 348+up);
+        ctx.quadraticCurveTo(280+i, 357+up, 301+i, 365+up); // квадратичная кривая
+        ctx.closePath();
+        ctx.fillStyle = 'yellow';
+        ctx.fill();// рисуем фигуру с внутренней обводкой
+        ctx.strokeStyle = 'yellow';
+        ctx.stroke();
+
+        //левое колесо
+        ctx.beginPath();
+        ctx.arc(110+i, 387+up, 21, 0, 2 * Math.PI, true);// рисуем дугу с центром в точке
+        ctx.fillStyle = 'white';
+        ctx.fill();
+        ctx.lineWidth = 12;
+        ctx.strokeStyle = 'black';
+        ctx.stroke();
+        ctx.closePath();
+
+        //правое колесо
+        ctx.beginPath();
+        ctx.arc(260+i, 387+up, 21, 0, 2 * Math.PI, true);
+        ctx.fillStyle = "white";
+        ctx.fill();
+        ctx.lineWidth = 12;
+        ctx.strokeStyle = 'black';
+        ctx.stroke();
+        ctx.closePath();
+
+        // левое окно
+        ctx.beginPath();
+        ctx.moveTo(110+i, 270+up);
+        ctx.lineTo(170+i, 270+up);
+        ctx.lineTo(170+i, 340+up);
+        ctx.lineTo(90+i, 340+up);
+        ctx.closePath();
+        ctx.fillStyle = "grey";
+        ctx.fill();
+        ctx.lineWidth = 8;
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+
+        // правое окно
+        ctx.beginPath();
+        ctx.moveTo(200+i, 270+up);
+        ctx.lineTo(170+i, 270+up);
+        ctx.lineTo(170+i, 340+up);
+        ctx.lineTo(280+i, 340+up);
+        ctx.closePath();
+        ctx.fillStyle = "grey";
+        ctx.fill();
+        ctx.lineWidth = 8;
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+
+        i+=direction;
+    }, 10)
+
+</script>
+</BODY>
+</HTML>

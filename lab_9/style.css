@@ -1,0 +1,87 @@
+    .container 
+    {
+      margin: 100px auto;
+      width: 200px;
+      height: 300px;
+      perspective: 500px;
+    }
+    .cube 
+    {
+      width: 200px;
+      height: 200px;
+      transform-style: preserve-3d;
+    }
+    .side 
+    {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 3px solid black;
+    }
+    .front 
+    {
+      background-color: red;
+      transform: translateZ(100px);
+    }
+    .back
+    {
+      background-color: orange;
+      transform: translateZ(-100px);
+    }
+    .left
+    {
+      background-color: green;
+      transform: rotateY(-90deg) translateZ(100px);
+    }
+    .right
+    {
+      background-color: blue;
+      transform: rotateY(90deg) translateZ(100px);
+    }
+    .top
+    {
+      background-color: white;
+      transform: rotateX(90deg) translateZ(100px);
+    }
+    .bottom 
+    {
+      background-color: yellow;
+      transform: rotateX(-90deg) translateZ(100px);
+    }
+    .flat_1
+    {
+      border: 3px solid black;
+      line-height: 200px;
+      transform: translateZ(35px);
+    }
+    .flat_2
+    {
+      border: 3px solid black;
+      line-height: 200px;
+      transform: translateZ(-35px);
+    }
+    .flat_3
+    {
+      border: 3px solid black;
+      line-height: 200px;
+      transform: rotateY(-90deg) translateZ(35px);
+    }
+    .flat_4
+    {
+      border: 3px solid black;
+      line-height: 200px;
+      transform: rotateY(-90deg) translateZ(-35px);
+    }
+    .flat_5
+    {
+      border: 3px solid black;
+      line-height: 200px;
+      transform: rotateX(90deg) translateZ(35px);
+    }
+    .flat_6
+    {
+      border: 3px solid black;
+      line-height: 200px;
+      transform: rotateX(90deg) translateZ(-35px);
+    }
+    

@@ -1,0 +1,166 @@
+<HTML>
+<BODY>
+<canvas id="lab06" width="700" height="700" style="border:1px solid">
+</canvas>
+<script>
+    function Line(ctx, x0, y0, x1, y1)
+    {
+        var x,y;
+        const dy = Math.abs(y1-y0);
+        const dx = Math.abs(x1-x0);
+        const dmax = Math.max(dx, dy);
+        const dmin = Math.min(dx, dy);
+        var xdir = 1;
+        if (x1<x0) 
+        {
+            xdir = -1;
+        }	
+        var ydir = 1;
+        if (y1<y0) 
+        {
+            ydir = -1;
+        }
+        var eps = 0;
+        var s = 1;
+        const k=2*dmin;
+        if (dy<=dx) 
+        {
+            var y = y0;
+            for (var x=x0; x*xdir<=x1*xdir; x= x + xdir) 
+            {   
+                ctx.fillRect(x, y, 1, 1);
+                eps = eps+k;
+                if (eps>dmax) 
+                {
+                    y= y + ydir;
+                    eps = eps - 2*dmax;
+                }	
+            }   
+            } else {
+                var x = x0;
+                for (var y=y0; y*ydir<=y1*ydir; y= y + ydir) 
+            {
+                ctx.fillRect(x, y, 1, 1);
+                eps = eps+k;
+                if (eps>dmax)
+                {
+                    x= x + xdir;
+                    eps = eps - 2*dmax;
+                }	
+            } 
+        }		
+    }
+    </script>
+    <script>
+        var canvas = document.getElementById("lab06");
+        var ctx = canvas.getContext("2d");
+        ctx.fillStyle = "black";
+        var state = 0;
+        var x0, y0;
+        var ax, ay;
+        var bx, by;
+        var V = [];
+        class Point
+        {    
+            constructor(x, y) 
+            {
+                this.x = x;
+                this.y = y;
+            }
+        }
+        function FillPolygon(c, z) 
+        {
+            var MIN = z[0].y, MAX = z[0].y;         
+            for (var i = 0; i < z.length; i++) 
+            {       
+                if (z[i].y < MIN) 
+                {
+                    MIN = z[i].y;  
+                }   
+                if (z[i].y > MAX) 
+                {
+                    MAX = z[i].y;     
+                }
+            }
+            var Array = [];                                        
+            for (var i = 0; i < z.length; i++) 
+            {                 
+                var next_point = 0;                                          
+                if (i !== z.length - 1) 
+                {
+                    next_point = i + 1;
+                }
+                var hi = 0, lo = 0;
+                if (z[i].y > z[next_point].y) 
+                {
+                    d = i; t = next_point; 
+                }        
+                else if (z[i].y < z[next_point].y) 
+                {
+                    d = next_point; t = i;   
+                }  
+                else 
+                {
+                    continue;
+                }
+                var k = (z[d].y - z[t].y) / (z[d].x - z[t].x); // 
+                for (let j = z[t].y; j < z[d].y; j++) 
+                {                
+                    if (typeof Array[j] == "undefined") Array[j] = [];       
+                    Array[j].push((j - z[t].y)/k + z[t].x)            
+                }
+            }
+            for (var y = MIN; y < MAX; y++) 
+            {                            
+                var Array1 = Array[y].sort(function(a, b) 
+                { 
+                    return a - b; 
+                });  
+                for (var j = 0; j < Array1.length / 2; j++) 
+                {   
+                    for (var x = Array1[j*2]; x < Array1[j*2+1]; x++) 
+                    {     
+                        ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);   
+                    }
+                }
+            }
+        }
+        canvas.addEventListener("click", function (event) 
+        {           
+            if (state === 0) 
+            {
+                V.push(new Point(event.offsetX, event.offsetY)); 
+                ctx.fillRect(event.offsetX, event.offsetY, 2, 2);       
+                x0 = event.offsetX;
+                y0 = event.offsetY;
+                ax = event.offsetX;
+                ay = event.offsetY;
+                state = 1;
+            } else if (state === 1) {
+                bx = event.offsetX;
+                by = event.offsetY;
+                Line(ctx, x0, y0, bx, by);
+                x0 = event.offsetX;
+                y0 = event.offsetY;
+                V.push(new Point(event.offsetX, event.offsetY)); 
+                state = 1;
+            }
+            if (state === 2) 
+            {
+                FillPolygon(ctx, V);
+                V = [];
+            }
+
+        })
+        canvas.addEventListener("contextmenu", function () 
+        {       
+            if (state === 1) 
+            {
+                Line(ctx, x0, y0, ax, ay);
+                state = 2;
+                console.log(state)
+            }
+        })
+    </script>
+</BODY>
+</HTML>

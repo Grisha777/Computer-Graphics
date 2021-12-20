@@ -3,4 +3,4 @@
 ## Задание
 Построить кривую Безье
 
-![image](https://user-images.githubusercontent.com/61342782/145786296-0fcfc2fd-2834-4ab5-b5cb-384a88b3a264.png)
+![Снимок экрана 2021-12-20 223922](https://user-images.githubusercontent.com/61342782/146823601-18352b03-83ca-4d67-988f-7832e65f3e42.png)

@@ -1,0 +1,42 @@
+
+<HTML>
+<BODY>
+<canvas id ="lab09" width='700' height='700' style="border:1px solid;"></canvas>
+<script>
+        var canvas = document.getElementById("lab09");
+        var ctx = canvas.getContext("2d");
+        var L = {x:100, y:120, z:100};
+        var color = "0x00770f";
+        var q = 1;
+        function Fill(figure, color){
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(figure[0].x,figure[0].y);
+            for(var i in figure){
+                ctx.lineTo(figure[i].x,figure[i].y);
+            }
+            ctx.closePath();
+            ctx.fill();
+        }
+        function color3dPlane (L, plane, color)
+    {
+		var cos = ((-1*((((plane[1].z-plane[0].z)*(plane[2].x-plane[0].x)-(plane[2].z-plane[0].z)*(plane[1].x-plane[0].x))/((plane[2].y-plane[0].y)*(plane[1].x-plane[0].x)-(plane[1].y-plane[0].y)*(plane[2].x-plane[0].x)))*(plane[1].y-plane[0].y)+(plane[1].z-plane[0].z))/(plane[1].x-plane[0].x))*(plane[0].x-L.x)+((((plane[1].z-plane[0].z)*(plane[2].x-plane[0].x)-(plane[2].z-plane[0].z)*(plane[1].x-plane[0].x))/((plane[2].y-plane[0].y)*(plane[1].x-plane[0].x)-(plane[1].y-plane[0].y)*(plane[2].x-plane[0].x))))*(plane[0].y-L.y)+1*(plane[0].z-L.z))/Math.sqrt((-1*((((plane[1].z-plane[0].z)*(plane[2].x-plane[0].x)-(plane[2].z-plane[0].z)*(plane[1].x-plane[0].x))/((plane[2].y-plane[0].y)*(plane[1].x-plane[0].x)-(plane[1].y-plane[0].y)*(plane[2].x-plane[0].x)))*(plane[1].y-plane[0].y)+(plane[1].z-plane[0].z))/(plane[1].x-plane[0].x))*(-1*((((plane[1].z-plane[0].z)*(plane[2].x-plane[0].x)-(plane[2].z-plane[0].z)*(plane[1].x-plane[0].x))/((plane[2].y-plane[0].y)*(plane[1].x-plane[0].x)-(plane[1].y-plane[0].y)*(plane[2].x-plane[0].x)))*(plane[1].y-plane[0].y)+(plane[1].z-plane[0].z))/(plane[1].x-plane[0].x))+((((plane[1].z-plane[0].z)*(plane[2].x-plane[0].x)-(plane[2].z-plane[0].z)*(plane[1].x-plane[0].x))/((plane[2].y-plane[0].y)*(plane[1].x-plane[0].x)-(plane[1].y-plane[0].y)*(plane[2].x-plane[0].x))))*((((plane[1].z-plane[0].z)*(plane[2].x-plane[0].x)-(plane[2].z-plane[0].z)*(plane[1].x-plane[0].x))/((plane[2].y-plane[0].y)*(plane[1].x-plane[0].x)-(plane[1].y-plane[0].y)*(plane[2].x-plane[0].x))))+1*1)/Math.sqrt((plane[0].x-L.x)*(plane[0].x-L.x)+(plane[0].y-L.y)*(plane[0].y-L.y)+(plane[0].z-L.z)*(plane[0].z-L.z));
+		var Red = Math.round(((color&0xff0000)>>16)*Math.abs(cos));
+		var Green = Math.round(((color&0x00ff00)>>8)*Math.abs(cos));
+		var Blue = Math.round(((color&0x0000ff))*Math.abs(cos));
+		Fill([{x:plane[0].x , y:plane[0].y },{x:plane[1].x , y:plane[1].y }, {x:plane[2].x , y:plane[2].y }], '#'+Red.toString(10) + Green.toString(10) + Blue.toString(10));
+	}
+        setInterval(function (){
+            if (L.z == 200){
+                q = -1;
+            }
+            if (L.z == 100){
+                q = 1;
+            }
+            L.z = L.z + q;
+            color3dPlane(L, [{x:100, y:450, z:50},{x:320, y:150, z:50}, {x:370, y:450, z:50}], color);
+            color3dPlane(L, [{x:320, y:150, z:50}, {x:370, y:450, z:50}, {x:450, y:400, z:50}], color);
+        }, 50);   
+</script> 
+</BODY>
+</HTML>
